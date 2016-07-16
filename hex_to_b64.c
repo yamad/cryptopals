@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
+int from_hex(char *hex, int nbytes, unsigned char *bytes);
 short int get_hex_byte(char *in);
 unsigned char get_n_6bit(unsigned char *bytes, unsigned int n);
 int encode_b64(unsigned char *bytes, int nbytes, char *b64);
@@ -9,31 +11,16 @@ char HEX_DIGU[] = "0123456789ABCDEF";
 char HEX_DIGL[] = "0123456789abcdef";
 char B64_DIG[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-#define MAXBYTE 1000
-
-int main(int argc, char *argv[])
+/* convert hex string to bytes */
+int from_hex(char *hex, int nbytes, unsigned char *bytes)
 {
-    unsigned char buf[MAXBYTE] = {0};
-    char b64_buf[MAXBYTE] = {0};
-    int a;
-
-    if (argc < 2 || argc > 3) {
-       printf("Usage: %s <hex value>\n", argv[0]);
-       return 1;
-    }
-    char* s = argv[1];          /* get input hex number */
-
-    /* convert hex string to bytes */
-    int n = 0;
-    while ((a = get_hex_byte(s)) != -1 && n<1000) {
-        buf[n++] = a;
-        s += 2;
-    }
-    if (n == 1000) printf("Too many bytes.\n");
-
-    int e = encode_b64(buf, n, b64_buf);
-    printf("%s\n", b64_buf);
-    return 0;
+	int a;
+	int n = 0;
+	while ((a = get_hex_byte(hex)) != -1 && n < nbytes) {
+		bytes[n++] = a;
+		hex += 2;
+	}
+	return n;
 }
 
 short int get_hex_byte(char *in)
