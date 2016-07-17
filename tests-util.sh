@@ -14,7 +14,7 @@ ensure()
     fi
 
     _ntests=$(($_ntests + 1))
-    echo "test $_ntests: OK"
+    echo "  test $_ntests: OK"
 }
 
 # pass name of binary to test. must have a file called
@@ -22,6 +22,7 @@ ensure()
 # listed on subsequent lines
 run-tests()
 {
+    echo "Run tests for ${1}:"
     cat "tests/${1}-tests.txt" |
         while { read -r input; read -r expected; }
     do

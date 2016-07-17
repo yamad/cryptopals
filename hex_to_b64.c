@@ -2,17 +2,20 @@
 #include <string.h>
 #include <assert.h>
 
-int from_hex(char *hex, int nbytes, unsigned char *bytes);
+int decode_hex(char *hex, int nbytes, unsigned char *bytes);
+int encode_hex(unsigned char *bytes, int nbytes, char *hex, int nhex);
 short int get_hex_byte(char *in);
+
 unsigned char get_n_6bit(unsigned char *bytes, unsigned int n);
 int encode_b64(unsigned char *bytes, int nbytes, char *b64);
+
 
 char HEX_DIGU[] = "0123456789ABCDEF";
 char HEX_DIGL[] = "0123456789abcdef";
 char B64_DIG[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /* convert hex string to bytes */
-int from_hex(char *hex, int nbytes, unsigned char *bytes)
+int decode_hex(char *hex, int nbytes, unsigned char *bytes)
 {
 	int a;
 	int n = 0;
@@ -21,6 +24,18 @@ int from_hex(char *hex, int nbytes, unsigned char *bytes)
 		hex += 2;
 	}
 	return n;
+}
+
+int encode_hex(unsigned char *bytes, int nbytes, char *hex, int nhex) {
+	int b;
+	int i, j;
+	for (i = j = 0; i < nbytes && j < nhex-3;) {
+		b = bytes[i++];
+		hex[j++] = HEX_DIGL[((b & 0xF0) >> 4)];
+		hex[j++] = HEX_DIGL[((b & 0x0F) >> 0)];
+	}
+	hex[j+1] = '\0';
+	return j;
 }
 
 short int get_hex_byte(char *in)
