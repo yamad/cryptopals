@@ -1,5 +1,6 @@
 #include "util.h"
-#include "hex_to_b64.c"
+#include "hex.h"
+#include "b64.h"
 
 #define MAXBYTE 1024
 

@@ -1,6 +1,6 @@
-#include "xor.c"
-#include "hex_to_b64.c"
 #include "util.h"
+#include "xor.h"
+#include "hex.h"
 
 #define MAXLEN 1024
 

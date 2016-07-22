@@ -27,6 +27,6 @@ run-tests()
         while { read -r input; read -r expected; }
     do
         actual=`bin/${1} ${input}`
-        ensure ${actual} ${expected}
+        ensure "${actual}" "${expected}"
     done
 }
