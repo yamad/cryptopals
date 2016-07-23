@@ -16,6 +16,6 @@ int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned cha
  * brute-force guess key for `buf` encrypted with single-byte
  * XOR. return `key` and decrypted string in `out`
  */
-void break_xor(unsigned char *buf, size_t len, unsigned char *key, unsigned char **out);
+void break_xor(unsigned char *buf, size_t len, unsigned char *key, unsigned char **out, double *score);
 
 #endif /* CRYPTOPALS_XOR_H */

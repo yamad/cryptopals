@@ -26,7 +26,7 @@ int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned cha
 }
 
 void break_xor(unsigned char *buf, size_t len,
-	unsigned char *key, unsigned char **out) {
+	unsigned char *key, unsigned char **out, double *score) {
 
 	double curscore;
 	unsigned char curkey = 0;
@@ -34,7 +34,7 @@ void break_xor(unsigned char *buf, size_t len,
 	assert(curout != NULL);
 	curout[len+1] = '\0';
 
-	double score = INFINITY;
+	*score = INFINITY;
 	*key = 0;
 	*out = malloc(sizeof(char) * (len+1));
 	assert(*out != NULL);
@@ -45,8 +45,8 @@ void break_xor(unsigned char *buf, size_t len,
 		curscore = english_score(curout, len);
 
 		/* save minimum score */
-		if (curscore < score) {
-			score = curscore;
+		if (curscore < *score) {
+			*score = curscore;
 			*key = curkey;
 			memcpy(*out, curout, len+1);
 		}

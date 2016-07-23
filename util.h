@@ -20,7 +20,7 @@
  * Utilites for character frequency analysis
  */
 
-
+struct char_count;
 
 /**
  * chi-squared test is the sum of squared errors of a distribution
@@ -29,17 +29,21 @@
 double chi_squared_test(double *observed, double *expected, size_t len);
 
 /**
- * count of occurrences of characters A-Z (ignoring case) in string
+ * Count of occurrences of characters A-Z (ignoring case) in string
  * `str` of length `len`. Counts are returned in `freq` array. Return
  * value is total number of counted characters.
  */
-int count_chars(unsigned char *str, size_t len, double freq[]);
+int count_chars(unsigned char *str, size_t len, struct char_count *nchars);
 
-/* convert integer counts in array `freq` (of length `len`) to
- * proportions of `total` count. in place. */
-void count_to_freqs(double freq[], int total, size_t len);
+/**
+ * Convert letter counts in char_count `cc` to proportions of
+ * `nletters` total count. return results in `freq`, assumed to be at
+ * least 26 long. used for comparison to expected frequency distribution.
+ */
+void letter_freqs(struct char_count cc, int nletters, double freq[]);
 
-/* return a score indicating likliehood that `str` is English
+/**
+ * Return a score indicating likliehood that `str` is English
  *
  * based on frequency analysis, and χ-squared test. lower is better.
  */

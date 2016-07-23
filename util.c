@@ -20,27 +20,59 @@ double chi_squared_test(double *observed, double *expected, size_t len) {
 	return sum;
 }
 
-int count_chars(unsigned char *str, size_t len, double freq[]) {
-	int c;                      /* current character */
-	int n = 0;                  /* characters counted */
-	for (int i = 0; i < len && (c = *str++) != '\0'; i++) {
-		if (!isalpha(c)) continue;
-		freq[(int)(toupper(c) - 'A')]++;
-		n++;
-	}
-	return n;
+struct char_count {
+	unsigned int letters[26];   /* A-Z */
+	unsigned int space;           /* space characters */
+	unsigned int punct;           /* punctuation */
+	unsigned int nonprint;        /* non-printing characters */
+	unsigned int extended;        /* extended ASCII characters */
+};
+
+void char_count_init(struct char_count *cc) {
+	for (int i = 0; i < 26; i++)
+		cc->letters[i] = 0;
+	cc->space = 0;
+	cc->punct = 0;
+	cc->nonprint = 0;
+	cc->extended = 0;
 }
 
-void count_to_freqs(double freq[], int total, size_t len) {
-	for (int i = 0; i < len; i++)
-		freq[i] /= total;
+int count_chars(unsigned char *str, size_t len, struct char_count *nchars) {
+	int c;                      /* current character */
+	int nletters = 0;           /* letters counted */
+	for (int i = 0; i < len && (c = *str++) != '\0'; i++) {
+		if (isalpha(c)) {
+			nchars->letters[(int)(toupper(c) - 'A')]++; /* assumes ASCII */
+			nletters++;
+		} else if (isspace(c)) {
+			nchars->space++;
+		} else if (ispunct(c)) {
+			nchars->punct++;
+		} else if (c > 126) {
+			nchars->extended++;
+		} else if (!isprint(c)) {
+			nchars->nonprint++;
+		}
+	}
+	return nletters;
+}
+
+void letter_freqs(struct char_count cc, int nletters, double freq[]) {
+	for (int i = 0; i < 26; i++)
+		freq[i] = cc.letters[i] / (double) nletters;
 }
 
 double english_score(unsigned char *str, size_t len) {
-	double freq[26] = {0};
-	int total = count_chars(str, len, freq);
-	if (total == 0) return 2048;
+	struct char_count cc;
+	char_count_init(&cc);
 
-	count_to_freqs(freq, total, 26);
-	return chi_squared_test((double *)freq, ENG_LETTER_FREQ, 26);
+	int nletters = count_chars(str, len, &cc);
+	if (nletters == 0) return INFINITY;
+
+	double freq[26] = {0};
+	letter_freqs(cc, nletters, freq);
+
+	double score = chi_squared_test((double *)freq, ENG_LETTER_FREQ, 26);
+	score += (cc.nonprint + cc.extended) * 10; /* punish non-letters */
+	return score;
 }

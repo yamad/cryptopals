@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 {
 	size_t nhex, nbyte;
 	unsigned char *input;
+
+	double score;
 	unsigned char key, *out;
 
 	ensure_argc(2, "Usage: %s <hex string>\n");
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
 	assert(input != NULL);
 
 	decode_hex(argv[1], nbyte, input);
-	break_xor(input, nbyte, &key, &out);
+	break_xor(input, nbyte, &key, &out, &score);
 
 	printf("%d -- %s\n", key, out);
 
