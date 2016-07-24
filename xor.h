@@ -13,6 +13,14 @@ int fixed_xor(unsigned char* buf1, unsigned char *buf2, size_t len, unsigned cha
 int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned char* dst);
 
 /**
+ * encrypt `buf` with `key` using repeating-key XOR. return result in `dst`
+ *
+ * @param len    size of buffer to encrypt and destination buffer
+ * @param keylen size of key
+ *  */
+void repeatkey_xor(unsigned char *buf, size_t len, unsigned char *key, size_t keylen, unsigned char *dst);
+
+/**
  * brute-force guess key for `buf` encrypted with single-byte
  * XOR. return `key` and decrypted string in `out`
  */

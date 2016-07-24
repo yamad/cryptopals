@@ -18,7 +18,7 @@ int decode_hex(char *hex, int nbytes, unsigned char *bytes)
 int encode_hex(unsigned char *bytes, int nbytes, char *hex, int nhex) {
 	int b;
 	int i, j;
-	for (i = j = 0; i < nbytes && j < nhex-3;) {
+	for (i = j = 0; i < nbytes && j < nhex-1;) {
 		b = bytes[i++];
 		hex[j++] = HEX_DIGL[((b & 0xF0) >> 4)];
 		hex[j++] = HEX_DIGL[((b & 0x0F) >> 0)];

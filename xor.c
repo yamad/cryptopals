@@ -25,6 +25,12 @@ int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned cha
 	return n;
 }
 
+void repeatkey_xor(unsigned char *buf, size_t len, unsigned char *key, size_t keylen, unsigned char *dst) {
+	for (int i = 0; i < len; i++) {
+		dst[i] = (unsigned char)(buf[i] ^ key[i % keylen]);
+	}
+}
+
 void break_xor(unsigned char *buf, size_t len,
 	unsigned char *key, unsigned char **out, double *score) {
 
