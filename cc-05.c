@@ -5,33 +5,37 @@
 #include "xor.h"
 #include "hex.h"
 
+
+#define MAXLEN 2048
+#define HEXLEN 4096
+
 /* repeating-key XOR */
 int main(int argc, char *argv[]) {
-	ensure_argc(3, "Usage: %s <key> <input string>\n");
+	ensure_argc(2, "Usage: %s <key>\n");
+
+	char ibuf[MAXLEN] = {0};    /* input buffer */
+	char obuf[MAXLEN] = {0};    /* output buffer */
+	char hbuf[HEXLEN] = {0};    /* hex string buffer */
 
 	/* name arguments */
 	char *key = argv[1];
-	char *input = argv[2];
-
-	/* calculate buffer lengths */
-	int len = strlen(input);
 	int keylen = strlen(key);
-	int hexlen = len*2 + 1;
+	int keyoff = 0;
 
-	/* allocate buffers */
-	unsigned char *bytes = malloc(sizeof(unsigned char) * len);
-	char *hexout = malloc(sizeof(char) * hexlen);
+	int len;
+	/* read stdin, XOR as it goes */
+	while(fgets(ibuf, MAXLEN, stdin) != NULL) {
+		len = strlen(ibuf);
 
-	/* quit if memory allocation fails */
-	if (!bytes) return -1;
-	if (!hexout) return -1;
+		/* XOR with given key, output as hex string */
+		repeatkey_xor((unsigned char *)ibuf, len,
+			(unsigned char *)key, keylen, keyoff, (unsigned char *)obuf);
+		obuf[len+1] = '\0';
+		encode_hex((unsigned char *)obuf, len, hbuf, HEXLEN);
+		printf("%s", hbuf);
 
-	/* XOR with given key, output as hex string */
-	repeatkey_xor((unsigned char *)input, len, (unsigned char *)key, keylen, bytes);
-	encode_hex((unsigned char *)bytes, len, hexout, hexlen);
-	printf("%s\n", hexout);
-
-	free(hexout);
-	free(bytes);
+		keyoff = (len+keyoff) % keylen;
+	}
+	printf("\n");
 	return 0;
 }

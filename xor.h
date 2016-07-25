@@ -17,8 +17,9 @@ int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned cha
  *
  * @param len    size of buffer to encrypt and destination buffer
  * @param keylen size of key
- *  */
-void repeatkey_xor(unsigned char *buf, size_t len, unsigned char *key, size_t keylen, unsigned char *dst);
+ * @param keyoff use key at offset
+ **/
+void repeatkey_xor(unsigned char *buf, size_t len, unsigned char *key, size_t keylen, int keyoff, unsigned char *dst);
 
 /**
  * brute-force guess key for `buf` encrypted with single-byte
