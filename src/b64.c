@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 #include "b64.h"
 
 char B64_DIG[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -20,6 +22,23 @@ unsigned char get_n_6bit(unsigned char *bytes, unsigned int n)
         x = (bytes[b] & 0x3F);
     }
     return x;
+}
+
+char from_b64(char b64_char) {
+	if (isupper(b64_char)) {        /* uppercase letters */
+		return (b64_char - 'A');
+	} else if (islower(b64_char)) { /* lowercase letters */
+		return (b64_char - 'a') + 26;
+	} else if (isdigit(b64_char)) { /* digits */
+		return (b64_char - '0') + 52;
+	} else if (b64_char == '+')     /* plus (+) */
+		return 62;
+	else if (b64_char == '/')       /* backslash (/) */
+		return 63;
+	else if (b64_char == '=')       /* padding character */
+		return 0;
+	else                            /* unknown */
+		return -1;
 }
 
 int encode_b64(unsigned char *bytes, int nbytes, char *b64)
