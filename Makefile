@@ -1,17 +1,53 @@
-TARGETS=bin/cc-01 bin/cc-02 bin/cc-03 bin/cc-04 bin/cc-05
+TARGET_NAMES = cc-01 cc-02 cc-03 cc-04 cc-05
 
-all: $(TARGETS) test
+BUILD_DIR   := build
+BIN_DIR		:= $(BUILD_DIR)/bin
+DEP_DIR     := $(BUILD_DIR)/depends
+OBJ_DIR     := $(BUILD_DIR)/objs
+LIB_DIR		:= $(BUILD_DIR)/libs
+RESULT_DIR  := $(BUILD_DIR)/results
+BUILD_PATHS := $(BUILD_DIR) $(BIN_DIR) $(DEP_DIR) $(OBJ_DIR) $(LIB_DIR) $(RESULT_DIR)
 
-bin/cc-01: cc-01.o hex.o b64.o util.o
-bin/cc-02: cc-02.o xor.o hex.o util.o
-bin/cc-03: cc-03.o xor.o hex.o util.o
-bin/cc-04: cc-04.o xor.o hex.o util.o
-bin/cc-05: cc-05.o xor.o hex.o util.o
+# make directories
+makedir = $(shell mkdir -p $1)
+$(foreach dir,$(BUILD_PATHS),$(call makedir,$(dir)))
 
-bin/%:
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+SRCS := $(wildcard *.c)			               # all source files (*.c)
+OBJS := $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS)) # all object files (*.o)
+DEPS := $(patsubst %.c,$(DEP_DIR)/%.d,$(SRCS)) # all depend files (*.d)
 
-clean:
-	$(RM) $(TARGETS) *.o
+
+TARGETS = $(foreach t,$(TARGET_NAMES),$(BIN_DIR)/$(t))
+
+
+.PHONY: all objects depend test
+all: $(TARGETS) objects test
+objects: $(OBJS)
+depend: $(DEPS)
 test:
 	./tests-run-01.sh
+clean:
+	$(RM) -r $(BUILD_DIR)
+
+
+# static library to use in all binaries
+LIBCP_FILES = util.o hex.o xor.o b64.o
+LIBCP_PATHS = $(foreach f,$(LIBCP_FILES),$(OBJ_DIR)/$(f))
+$(LIB_DIR)/libcryptopals.a : $(LIBCP_PATHS)
+	ar rcs $@ $^
+
+CFLAGS = -I.
+LDFLAGS := -L$(LIB_DIR) -lcryptopals
+
+# build targets
+$(BIN_DIR)/%: $(OBJ_DIR)/%.o $(LIB_DIR)/libcryptopals.a
+	$(CC) -o $@ $< $(CFLAGS) $(LDFLAGS)
+
+# build objects and dependencies
+$(OBJ_DIR)/%.o : %.c
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -MF $(DEP_DIR)/$*.d -o $@ -c $<
+
+# print variable for debugging
+print-%: ; @echo $* = '$($*)' from $(origin $*)
+
+-include $(DEPS)

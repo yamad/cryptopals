@@ -31,7 +31,7 @@ run-tests()
             then
                 actual=$(eval ${input})
             else
-                actual=`bin/${1} ${input}`
+                actual=`build/bin/${1} ${input}`
             fi
             ensure "${actual}" "${expected}"
         done
