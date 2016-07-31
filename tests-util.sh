@@ -24,7 +24,7 @@ ensure()
 run-tests()
 {
     echo "Run tests for ${1}:"
-    cat "tests/${1}-tests.txt" |
+    cat "test/${1}-tests.txt" |
         while { read -r input; read -r expected; }
         do
             if [ "$2" == "command-input" ]
