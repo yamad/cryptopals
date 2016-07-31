@@ -1,42 +1,47 @@
 [
     {
-        "command": "cc -c -o cc-01.o cc-01.c", 
+        "command": "cc -c -Iinclude -o build/objs/cc-01.o src/cc-01.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/cc-01.c"
+        "file": "/Users/jyh/src/cryptopals/src/cc-01.c"
     }, 
     {
-        "command": "cc -c -o hex.o hex.c", 
+        "command": "cc -c -Iinclude -o build/objs/util.o src/util.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/hex.c"
+        "file": "/Users/jyh/src/cryptopals/src/util.c"
     }, 
     {
-        "command": "cc -c -o b64.o b64.c", 
+        "command": "cc -c -Iinclude -o build/objs/hex.o src/hex.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/b64.c"
+        "file": "/Users/jyh/src/cryptopals/src/hex.c"
     }, 
     {
-        "command": "cc -c -o util.o util.c", 
+        "command": "cc -c -Iinclude -o build/objs/xor.o src/xor.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/util.c"
+        "file": "/Users/jyh/src/cryptopals/src/xor.c"
     }, 
     {
-        "command": "cc -c -o cc-02.o cc-02.c", 
+        "command": "cc -c -Iinclude -o build/objs/b64.o src/b64.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/cc-02.c"
+        "file": "/Users/jyh/src/cryptopals/src/b64.c"
     }, 
     {
-        "command": "cc -c -o xor.o xor.c", 
+        "command": "cc -c -Iinclude -o build/objs/cc-02.o src/cc-02.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/xor.c"
+        "file": "/Users/jyh/src/cryptopals/src/cc-02.c"
     }, 
     {
-        "command": "cc -c -o cc-03.o cc-03.c", 
+        "command": "cc -c -Iinclude -o build/objs/cc-03.o src/cc-03.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/cc-03.c"
+        "file": "/Users/jyh/src/cryptopals/src/cc-03.c"
     }, 
     {
-        "command": "cc -c -o cc-04.o cc-04.c", 
+        "command": "cc -c -Iinclude -o build/objs/cc-04.o src/cc-04.c", 
         "directory": "/Users/jyh/src/cryptopals", 
-        "file": "/Users/jyh/src/cryptopals/cc-04.c"
+        "file": "/Users/jyh/src/cryptopals/src/cc-04.c"
+    }, 
+    {
+        "command": "cc -c -Iinclude -o build/objs/cc-05.o src/cc-05.c", 
+        "directory": "/Users/jyh/src/cryptopals", 
+        "file": "/Users/jyh/src/cryptopals/src/cc-05.c"
     }
 ]
