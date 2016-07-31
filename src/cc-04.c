@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 			bestout = out;
 			bestline = i;
 		}
-//		printf("%d, %d, %.4f -- %s\n", i, key, score, out);
 		i++;
 	}
 
