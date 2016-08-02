@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     ensure_argc(2, "Usage: %s <hex value>\n");
 
     int nbytes = decode_hex(argv[1], MAXBYTE, bytes); /* hex to bytes */
-    encode_b64(bytes, nbytes, b64_buf);               /* bytes to b64 */
+    b64_encode(bytes, nbytes, b64_buf);               /* bytes to b64 */
     printf("%s\n", b64_buf);                          /* output */
     return 0;
 }
