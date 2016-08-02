@@ -28,10 +28,10 @@ int main(int argc, char *argv[]) {
 		len = strlen(ibuf);
 
 		/* XOR with given key, output as hex string */
-		repeatkey_xor((unsigned char *)ibuf, len,
+		xor_repeatkey((unsigned char *)ibuf, len,
 			(unsigned char *)key, keylen, keyoff, (unsigned char *)obuf);
 		obuf[len+1] = '\0';
-		encode_hex((unsigned char *)obuf, len, hbuf, HEXLEN);
+		hex_encode((unsigned char *)obuf, len, hbuf, HEXLEN);
 		printf("%s", hbuf);
 
 		keyoff = (len+keyoff) % keylen;

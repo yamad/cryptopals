@@ -4,7 +4,7 @@
 char HEX_DIGU[] = "0123456789ABCDEF";
 char HEX_DIGL[] = "0123456789abcdef";
 
-int decode_hex(char *hex, int nbytes, unsigned char *bytes)
+int hex_decode(char *hex, int nbytes, unsigned char *bytes)
 {
 	int a;
 	int n = 0;
@@ -15,7 +15,7 @@ int decode_hex(char *hex, int nbytes, unsigned char *bytes)
 	return n;
 }
 
-int encode_hex(unsigned char *bytes, int nbytes, char *hex, int nhex) {
+int hex_encode(unsigned char *bytes, int nbytes, char *hex, int nhex) {
 	int b;
 	int i, j;
 	for (i = j = 0; i < nbytes && j < nhex-1;) {

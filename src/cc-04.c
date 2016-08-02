@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 	int i = 0;
 	while (fgets(buf, sizeof(buf), f) != NULL) {
 		len = strlen(buf);
-		decode_hex(buf, len, bytes);
-		break_xor(bytes, len/2, &key, &out, &score);
+		hex_decode(buf, len, bytes);
+		xor_break_singlekey(bytes, len/2, &key, &out, &score);
 
 		if (score < bestscore) {
 			bestscore = score;

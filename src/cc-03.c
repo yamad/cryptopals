@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
 	input = malloc(sizeof(unsigned char) * nbyte);
 	assert(input != NULL);
 
-	decode_hex(argv[1], nbyte, input);
-	break_xor(input, nbyte, &key, &out, &score);
+	hex_decode(argv[1], nbyte, input);
+	xor_break_singlekey(input, nbyte, &key, &out, &score);
 
 	printf("%d -- %s\n", key, out);
 

@@ -8,53 +8,55 @@
 #include "util.h"
 #include "xor.h"
 
-int fixed_xor(unsigned char* buf1, unsigned char *buf2, size_t len, unsigned char* dst) {
+int xor_fixed(unsigned char *buf1, unsigned char *buf2, size_t len,
+              unsigned char *dst)
+{
 	int n;
-	for (n=0; n < len; n++) {
+	for (n = 0; n < len; n++) {
 		dst[n] = (unsigned char)(buf1[n] ^ buf2[n]);
 	}
 	return n;
 }
 
-int xor_on_byte(unsigned char* buf, unsigned char byte, size_t len, unsigned char* dst) {
-	int n;
-	for (n=0; n < len; n++) {
-		dst[n] = (unsigned char)(buf[n] ^ byte);
-	}
-
-	return n;
+int xor_singlekey(unsigned char *buf, unsigned char byte, size_t len,
+                  unsigned char *dst)
+{
+	xor_repeatkey(buf, len, &byte, 1, 0, dst);
 }
 
-void repeatkey_xor(unsigned char *buf, size_t len, unsigned char *key, size_t keylen, int keyoff, unsigned char *dst) {
+void xor_repeatkey(unsigned char *buf, size_t len,
+                   unsigned char *key, size_t keylen,
+                   int keyoff, unsigned char *dst)
+{
 	for (int i = 0; i < len; i++) {
-		dst[i] = (unsigned char)(buf[i] ^ key[(i+keyoff) % keylen]);
+		dst[i] = (unsigned char)(buf[i] ^ key[(i + keyoff) % keylen]);
 	}
 }
 
-void break_xor(unsigned char *buf, size_t len,
-	unsigned char *key, unsigned char **out, double *score) {
-
+void xor_break_singlekey(unsigned char *buf, size_t len,
+                         unsigned char *key, unsigned char **out, double *score)
+{
 	double curscore;
 	unsigned char curkey = 0;
-	unsigned char *curout = malloc(sizeof(char) * (len+1));
+	unsigned char *curout = malloc(sizeof(char) * (len + 1));
 	assert(curout != NULL);
-	curout[len+1] = '\0';
+	curout[len + 1] = '\0';
 
 	*score = INFINITY;
 	*key = 0;
-	*out = malloc(sizeof(char) * (len+1));
+	*out = malloc(sizeof(char) * (len + 1));
 	assert(*out != NULL);
 
 	for (curkey = 0; curkey < 255; curkey++) {
 		/* try candidate single-byte XOR and score */
-		xor_on_byte(buf, curkey, len, curout);
+		xor_singlekey(buf, curkey, len, curout);
 		curscore = english_score(curout, len);
 
 		/* save minimum score */
 		if (curscore < *score) {
 			*score = curscore;
 			*key = curkey;
-			memcpy(*out, curout, len+1);
+			memcpy(*out, curout, len + 1);
 		}
 	}
 	free(curout);

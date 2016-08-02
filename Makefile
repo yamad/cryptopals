@@ -1,4 +1,4 @@
-TARGET_NAMES = cc-01 cc-02 cc-03 cc-04 cc-05
+TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05
 
 SRC_DIR     := src
 INC_DIR     := include
@@ -24,11 +24,15 @@ DEPS := $(patsubst $(SRC_DIR)/%.c,$(DEP_DIR)/%.d,$(SRCS)) # all depend files (*.
 TARGETS = $(foreach t,$(TARGET_NAMES),$(BIN_DIR)/$(t))
 
 
+CFLAGS  := -I$(INC_DIR)
+LDFLAGS := -L$(LIB_DIR) -lcryptopals
+
 .PHONY: all objects depend test
 all: $(TARGETS) objects test
 objects: $(OBJS)
 depend: $(DEPS)
 test:
+	rake test:all
 	./tests-run-01.sh
 clean:
 	$(RM) -r $(BUILD_DIR)
@@ -38,9 +42,6 @@ LIBCP_FILES = util.o hex.o xor.o b64.o
 LIBCP_PATHS = $(foreach f,$(LIBCP_FILES),$(OBJ_DIR)/$(f))
 $(LIB_DIR)/libcryptopals.a : $(LIBCP_PATHS)
 	ar rcs $@ $^
-
-CFLAGS  := -I$(INC_DIR)
-LDFLAGS := -L$(LIB_DIR) -lcryptopals
 
 # build targets
 $(BIN_DIR)/%: $(OBJ_DIR)/%.o $(LIB_DIR)/libcryptopals.a
