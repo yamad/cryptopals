@@ -22,11 +22,23 @@ int b64_nbytes(char *b64);
  * A group may be 2,3, or 4 characters, corresponding to 1, 2, or 3
  * bytes. Will not decode more than `maxbytes` bytes.
  */
-int b64_decode_group(char *b64, uint8_t *bytes, size_t maxbytes);
+int b64_decode_group(char **b64, uint8_t *bytes, size_t maxbytes);
 
 /**
  *  Decode a base-64 string to bytes, up to `nbytes`. Return number of bytes decoded.
  */
 int b64_decode(char *b64, uint8_t *bytes, size_t nbytes);
+
+/**
+ * Return next valid base-64 character in string `b64` and advance pointer
+ *
+ * always returns a valid base-64 character or end-of-string '\0'
+ */
+char b64_next(char **b64);
+
+/**
+ * Return true if `a` is a valid b64 character, including padding char (=)
+ */
+int b64_ischar(char a);
 
 #endif /* CRYPTOPALS_B64_H */

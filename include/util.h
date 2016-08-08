@@ -1,7 +1,9 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
 #include <ctype.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifndef CRYPTOPALS_UTIL_H
 #define CRYPTOPALS_UTIL_H
@@ -15,6 +17,8 @@
 		}								  \
 	}
 
+/** return minimum value */
+int min(int a, int b);
 
 /**
  * Utilites for character frequency analysis
@@ -48,5 +52,23 @@ void letter_freqs(struct char_count cc, int nletters, double freq[]);
  * based on frequency analysis, and χ-squared test. lower is better.
  */
 double english_score(unsigned char *str, size_t len);
+
+/**
+ * count 1-bits
+ *
+ * uses HAKMEM algorithm. code taken from Hacker's Delight
+ * @ref Hacker's Delight, 2nd ed. Warren. pg. 84
+ */
+int count_bits(uint8_t x);
+
+/**
+ * return Hamming distance (# of differing bits) between byte arrays
+ */
+int hamming_distance(uint8_t *a, uint8_t *b, size_t maxlen);
+
+int transpose_blocks(uint8_t *b, size_t blen, size_t blocklen, uint8_t ***t);
+
+int fill_block(uint8_t *buf, size_t len, size_t stride, size_t offset, uint8_t *dst);
+
 
 #endif /* CRYPTOPALS_UTIL_H */

@@ -4,7 +4,7 @@
 
 #include "b64.h"
 
-char B64_DIG[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static char B64_DIG[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 unsigned char get_n_6bit(unsigned char *bytes, unsigned int n)
 {
@@ -26,7 +26,14 @@ unsigned char get_n_6bit(unsigned char *bytes, unsigned int n)
 	return x;
 }
 
-char from_b64(char b64_char) {
+int b64_ischar(char a)
+{
+	return isupper(a) || islower(a) || isdigit(a) ||
+		a == '/' || a == '+' || a == '=';
+}
+
+char from_b64(char b64_char)
+{
 	if (isupper(b64_char)) {        /* uppercase letters */
 		return (b64_char - 'A');
 	} else if (islower(b64_char)) { /* lowercase letters */
@@ -80,10 +87,15 @@ int b64_encode(unsigned char *bytes, int nbytes, char *b64)
 
 int b64_decode(char *b64, uint8_t *bytes, size_t nbytes)
 {
-	int i = nbytes;         /* bytes remaining */
-	for (; i > 0; b64 += 4, bytes += 3)
-		i -= b64_decode_group(b64, bytes, i);
-	return nbytes - i;      /* # of decoded bytes */
+	int n;                      /* bytes read in group */
+	int i = nbytes;             /* bytes remaining */
+	while (i > 0) {
+		n = b64_decode_group(&b64, bytes, i);
+		if (n == 0) break;
+		bytes += n;
+		i -= n;
+	}
+	return nbytes - i;          /* # of decoded bytes */
 }
 
 int b64_nbytes(char *b64)
@@ -91,36 +103,44 @@ int b64_nbytes(char *b64)
 	/* count base-64 characters, without padding */
 	int b64len = 0;
 	char b;
-	while ((b = *b64++) && b != '\0' && b != '=')
+	while ((b = b64_next(&b64)) && b != '\0' && b != '=')
 		b64len++;
 
 	int nbytes = (b64len / 4) * 3; /* full 4-char base-64 groups*/
-	switch (b64len % 4) {          /* last group may be 2 or 3 chars */
-	case 3:
+	switch (b64len % 4) {          /* may have incomplete final group */
+	case 3:                        /* 3 chars -> 2 bytes */
 		return nbytes + 2;
-	case 2:
+	case 2:                        /* 2 chars -> 1 byte */
 		return nbytes + 1;
-	default:
+	default:                       /* no incomplete groups */
 		return nbytes;
 	}
 }
 
-int b64_decode_group(char *b64, uint8_t *bytes, size_t maxbytes)
+int b64_decode_group(char **b64, uint8_t *bytes, size_t maxbytes)
 {
 	/* get base-64 value and mask low-order 6 bits */
 	uint8_t b1, b2, b3, b4;
-	b1 = from_b64(*b64++) & 0x3F;
-	b2 = from_b64(*b64++) & 0x3F;
+	b1 = from_b64(b64_next(b64)) & 0x3F;
+	b2 = from_b64(b64_next(b64)) & 0x3F;
 	*bytes++ = (b1 << 2) | (b2 >> 4);
-	if (maxbytes <= 1 || *b64 == '\0' || *b64 == '=')
+	if (maxbytes <= 1 || **b64 == '\0' || **b64 == '=')
 		return 1; /* only 1 byte in group */
 
-	b3 = from_b64(*b64++) & 0x3F;
+	b3 = from_b64(b64_next(b64)) & 0x3F;
 	*bytes++ = (b2 << 4) | (b3 >> 2);
-	if (maxbytes <= 2 || *b64 == '\0' || *b64 == '=')
+	if (maxbytes <= 2 || **b64 == '\0' || **b64 == '=')
 		return 2; /* only 2 bytes in group */
 
-	b4 = from_b64(*b64)   & 0x3F;
-	*bytes = (b3 << 6) | (b4 >> 0);
+	b4 = from_b64(b64_next(b64)) & 0x3F;
+	*bytes = (b3 << 6) | b4;
 	return 3;
+}
+
+char b64_next(char **b64_str)
+{
+	char c;
+	while ((c = *(*b64_str)++) && c != '\0' && !b64_ischar(c))
+		;
+	return c;
 }

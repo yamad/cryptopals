@@ -25,13 +25,20 @@ run-tests()
 {
     echo "Run tests for ${1}:"
     cat "test/${1}-tests.txt" |
-        while { read -r input; read -r expected; }
+        while { read -r input; read -r expect; }
         do
-            if [ "$2" == "command-input" ]
+            if [[ "$2" == "command-input"  || "$2" == "command-all" ]]
             then
                 actual=$(eval ${input})
             else
                 actual=`build/bin/${1} ${input}`
+            fi
+
+            if [[ "$3" == "command-output" || "$2" == "command-all" ]]
+            then
+                expected=$(eval ${expect})
+            else
+                expected=${expect};
             fi
             ensure "${actual}" "${expected}"
         done

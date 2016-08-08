@@ -1,4 +1,4 @@
-TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05
+TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06
 
 SRC_DIR     := src
 INC_DIR     := include
@@ -25,7 +25,7 @@ TARGETS = $(foreach t,$(TARGET_NAMES),$(BIN_DIR)/$(t))
 
 
 CFLAGS  := -I$(INC_DIR)
-LDFLAGS := -L$(LIB_DIR) -lcryptopals
+LDFLAGS := -L$(LIB_DIR) -lcryptopals -lm
 
 .PHONY: all objects depend test
 all: $(TARGETS) objects test
@@ -36,6 +36,10 @@ test:
 	./tests-run-01.sh
 clean:
 	$(RM) -r $(BUILD_DIR)
+
+debug: CFLAGS += -DDEBUG -g
+debug: CXXFLAGS += -DDEBUG -g
+debug: all
 
 # static library to use in all binaries
 LIBCP_FILES = util.o hex.o xor.o b64.o

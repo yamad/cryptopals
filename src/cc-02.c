@@ -4,12 +4,6 @@
 
 #define MAXLEN 1024
 
-static int min(int a, int b) {
-	if (a > b)
-		return b;
-	return a;
-}
-
 int main(int argc, char *argv[])
 {
 	unsigned char abuf[MAXLEN] = {0};

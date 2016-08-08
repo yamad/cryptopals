@@ -1,0 +1,2 @@
+cat data/cc-06-data.txt | build/bin/cc-06
+cat data/cc-06-output.txt
