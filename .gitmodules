@@ -1,0 +1,6 @@
+[submodule "vendor/unity"]
+	path = vendor/unity
+	url = https://github.com/ThrowTheSwitch/Unity
+[submodule "lib/openssl"]
+	path = lib/openssl
+	url = https://github.com/openssl/openssl

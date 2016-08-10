@@ -1,0 +1,2 @@
+cat data/cc-07-data.txt | build/bin/cc-07 "YELLOW SUBMARINE"
+openssl enc -d -aes-128-ecb -a -in data/cc-07-data.txt -K 59454c4c4f57205355424d4152494e450a
