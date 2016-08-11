@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 {
 	ensure_argc(2, "Usage: %s <input file>\n");
 
-	char str[ENTRY_BYTES*2+1] = {0};
+	char str[ENTRY_BYTES*2+2] = {0};
 	uint8_t hex[ENTRY_BYTES] = {0};
 	uint8_t best_hex[ENTRY_BYTES] = {0};
 
@@ -46,21 +46,21 @@ int main(int argc, char *argv[])
 	FILE *fp = fopen(argv[1], "r");
 
 	/* run through input lines, find lowest score */
-	int i = 0;
-	while (fgets(str, ENTRY_BYTES*2+1, fp) != NULL) {
+	int line = 0;
+	while (fgets(str, ENTRY_BYTES*2+2, fp) != NULL) {
 		hex_decode(str, ENTRY_BYTES, hex);
 		score = score_ecb(hex, ENTRY_BYTES);
 		if (score < best_score) {
 			best_score = score;
-			best_index = i;
+			best_index = line;
 			memcpy(best_hex, hex, ENTRY_BYTES);
 		}
-		i++;
+		line++;
 	}
 
 	/* display result */
 	printf("%d ", best_index);
-	for (i = 0; i < ENTRY_BYTES; i++)
+	for (int i = 0; i < ENTRY_BYTES; i++)
 		printf("%x", best_hex[i]);
 
 	fclose(fp);
