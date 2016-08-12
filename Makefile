@@ -1,4 +1,5 @@
-TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06 cc-07 cc-08
+TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06 cc-07 cc-08 \
+				cc-09
 
 SRC_DIR     := src
 INC_DIR     := include
@@ -34,6 +35,7 @@ depend: $(DEPS)
 test:
 	rake test:all
 	./tests-run-01.sh
+	./tests-run-02.sh
 clean:
 	$(RM) -r $(BUILD_DIR)
 
