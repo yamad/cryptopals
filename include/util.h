@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <ctype.h>
 #include <math.h>
 #include <stdint.h>
@@ -54,10 +55,7 @@ void letter_freqs(struct char_count cc, int nletters, double freq[]);
 double english_score(unsigned char *str, size_t len);
 
 /**
- * count 1-bits
- *
- * uses HAKMEM algorithm. code taken from Hacker's Delight
- * @ref Hacker's Delight, 2nd ed. Warren. pg. 84
+ * Count 1-bits in byte `x`
  */
 int count_bits(uint8_t x);
 
@@ -70,5 +68,16 @@ int transpose_blocks(uint8_t *b, size_t blen, size_t blocklen, uint8_t ***t);
 
 int fill_block(uint8_t *buf, size_t len, size_t stride, size_t offset, uint8_t *dst);
 
+/**
+ * Pad block using PKCS#7 (pad with # of pad bytes). Return # of pad bytes
+ *
+ * buffer `out` will take contents of `in`. extra bytes in `out` will
+ * be filled with the count of extra bytes. the length of out must be
+ * 2x the `outlen`, because if `inlen` == `outlen` then `outlen` bytes
+ * are added as a pad.
+ *
+ * @see RFC 2315, section 10.3, note 2.
+ */
+int pad_pkcs7(uint8_t *in, int inlen, uint8_t *out, int outlen);
 
 #endif /* CRYPTOPALS_UTIL_H */

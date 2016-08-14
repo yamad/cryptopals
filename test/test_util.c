@@ -68,3 +68,22 @@ void test_fill_block(void)
 	uint8_t expect3[2] = { 2, 8 };
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(expect3, actual, n);
 }
+
+void test_pad_pkcs7(void)
+{
+
+	uint8_t input[4]     =   { 'A', 'B', 'C', 'D' };
+
+	/* length of output buffer must be 2x input */
+	uint8_t expect[5][8] = { {   4,   4,   4,   4, 0, 0, 0, 0 },
+	                         { 'A',   3,   3,   3, 0, 0, 0, 0 },
+	                         { 'A', 'B',   2,   2, 0, 0, 0, 0 },
+	                         { 'A', 'B', 'C',   1, 0, 0, 0, 0 },
+	                         { 'A', 'B', 'C', 'D', 4, 4, 4, 4 } };
+
+	uint8_t actual[8] = {0};
+	for (int i = 0; i < 5; i++) {
+		pad_pkcs7(input, i, actual, 4);
+		TEST_ASSERT_EQUAL_UINT8_ARRAY(expect[i], actual, 8);
+	}
+}

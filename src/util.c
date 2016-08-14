@@ -135,3 +135,13 @@ int fill_block(uint8_t *buf, size_t len, size_t stride, size_t offset, uint8_t *
 	}
 	return n;
 }
+
+int pad_pkcs7(uint8_t *in, int inlen, uint8_t *out, int outlen)
+{
+	assert(inlen <= outlen);
+
+	int npad = outlen - (inlen % outlen);
+	memcpy(out, in, inlen);
+	memset(out+inlen, npad, npad);
+	return npad;
+}
