@@ -28,10 +28,19 @@
     - -:test/support
   :source:
     - src/**
+    - /usr/local/opt/openssl/lib
   :include:
     - include/**
+    - /usr/local/opt/openssl/include
   :support:
     - test/support
+
+:flags:
+  :test:
+    :link:
+      :*:
+        - -L/usr/local/opt/openssl/lib
+        - -lcrypto
 
 :defines:
   # in order to add common defines:

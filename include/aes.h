@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include <openssl/evp.h>
+#include <openssl/aes.h>
 
 int aes128_ecb_decrypt(uint8_t *cipher, size_t len,
                        uint8_t* key, size_t keylen,

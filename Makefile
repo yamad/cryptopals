@@ -25,8 +25,8 @@ DEPS := $(patsubst $(SRC_DIR)/%.c,$(DEP_DIR)/%.d,$(SRCS)) # all depend files (*.
 TARGETS = $(foreach t,$(TARGET_NAMES),$(BIN_DIR)/$(t))
 
 
-CFLAGS  := -I$(INC_DIR) -I$(BUILD_DIR)/include
-LDFLAGS := -L$(LIB_DIR) -lcryptopals -lcrypto -lm
+CFLAGS  := -I$(INC_DIR) -I$(BUILD_DIR)/include -I/usr/local/opt/openssl/include
+LDFLAGS := -L$(LIB_DIR) -L/usr/local/opt/openssl/lib -lcryptopals -lcrypto -lm
 
 .PHONY: all objects depend test
 all: $(TARGETS) objects test
@@ -91,7 +91,7 @@ clean_openssl :
 
 .PHONY : clean_openssl
 
-$(OBJ_DIR)/aes.o : $(LIB_DIR)/libcrypto.a
+#$(OBJ_DIR)/aes.o : $(LIB_DIR)/libcrypto.a
 
 
 -include $(DEPS)
