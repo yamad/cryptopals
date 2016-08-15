@@ -1,0 +1,2 @@
+cat data/cc-10-data.txt | build/bin/cc-10 59454c4c4f57205355424d4152494e450a 00
+cat data/cc-10-output.txt

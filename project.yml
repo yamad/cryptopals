@@ -28,7 +28,6 @@
     - -:test/support
   :source:
     - src/**
-    - /usr/local/opt/openssl/lib
   :include:
     - include/**
     - /usr/local/opt/openssl/include
@@ -39,8 +38,11 @@
   :test:
     :link:
       :*:
-        - -L/usr/local/opt/openssl/lib
+        - -L build/lib
+        - -L /usr/local/opt/openssl/lib
         - -lcrypto
+        - -lcryptopals
+        - -lm
 
 :defines:
   # in order to add common defines:

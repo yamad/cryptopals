@@ -1,5 +1,5 @@
 TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06 cc-07 cc-08 \
-				cc-09
+				cc-09 cc-10
 
 SRC_DIR     := src
 INC_DIR     := include
@@ -70,7 +70,7 @@ $(LIB_DIR)/libcrypto.a : lib/openssl/libcrypto.a $(BUILD_DIR)/include/openssl
 TOP_BUILD_DIR := $(realpath $(BUILD_DIR))
 TOP_OPENSSL_INC_DIR := $(TOP_BUILD_DIR)/include/openssl
 ifeq ($(shell uname -s),Darwin)
-	OPENSSL_CONFIG := Configure no-shared --prefix=$(TOP_BUILD_DIR) darwin64-x86_64-cc
+	OPENSSL_CONFIG := Configure no-shared --prefix=$(TOP_BUILD_DIR) enable-ec_nistp_64_gcc_128 darwin64-x86_64-cc
 else
 	OPENSSL_CONFIG := config no-shared --prefix=$(TOP_BUILD_DIR)
 endif
