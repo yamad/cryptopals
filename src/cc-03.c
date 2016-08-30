@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	double score;
 	unsigned char key, *out;
 
-	ensure_argc(2, "Usage: %s <hex string>\n");
+	ensure_argc(2, "1-byte XOR cipher -- Usage: %s <hex string>\n");
 	nhex = strlen(argv[1]);
 
 	/* decode hex string to bytes */

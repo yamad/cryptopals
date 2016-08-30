@@ -9,7 +9,7 @@
 #define AES_BLOCK_BYTES 16     /* # of bytes in an AES block (128 bits) */
 
 /**
- * score to test if `input` bytes were encrpyted by AES in ECB mode
+ * score to test if `input` bytes were encrypted by AES in ECB mode
  * (lower is better)
  *
  * Gives the average hamming distance between all pairs of AES
@@ -34,7 +34,7 @@ double score_ecb(uint8_t *input, int len)
 
 int main(int argc, char *argv[])
 {
-	ensure_argc(2, "Usage: %s <input file>\n");
+	ensure_argc(2, "AES-128 ECB detect -- Usage: %s <input file>\n");
 
 	char str[ENTRY_BYTES*2+2] = {0};
 	uint8_t hex[ENTRY_BYTES] = {0};

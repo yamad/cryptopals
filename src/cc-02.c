@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	unsigned char outbuf[MAXLEN] = {0};
 	char strbuf[MAXLEN*2 + 1] = {0};
 
-	ensure_argc(3, "Usage: %s <hex1> <hex2>");
+	ensure_argc(3, "Fixed XOR -- Usage: %s <hex1> <hex2>");
 	int alen = hex_decode(argv[1], MAXLEN, abuf);
 	int blen = hex_decode(argv[2], MAXLEN, bbuf);
 	if (alen != blen)

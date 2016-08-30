@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-	ensure_argc(2, "Usage: %s <filename>\n");
+	ensure_argc(2, "1-byte XOR detect -- Usage: %s <filename>\n");
 
 	FILE *f = fopen(argv[1], "r");
 	if (!f) return -1;

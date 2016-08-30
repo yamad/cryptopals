@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-	ensure_argc(2, "Usage: %s <key>\n");
+	ensure_argc(2, "AES-128 ECB decrypt -- Usage: %s <key>\n");
 
 	char *key = argv[1];
 	size_t keylen = strlen(key);

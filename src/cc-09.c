@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-	ensure_argc(3, "Usage: %s <block size> <input string>\n");
+	ensure_argc(3, "Pad PKCS#7 -- Usage: %s <block size> <input string>\n");
 
 	/* ingest arguments */
 	int blksz = atoi(argv[1]);

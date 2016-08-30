@@ -4,6 +4,7 @@
 
 #define MAXLEN 4096
 
+/* break repeating-key XOR */
 int main(int argc, char *argv[])
 {
 	char ibuf[MAXLEN] = {0};    /* input buffer  */

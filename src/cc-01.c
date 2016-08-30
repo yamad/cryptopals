@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     unsigned char bytes[MAXBYTE] = {0};
     char b64_buf[MAXBYTE] = {0};
 
-    ensure_argc(2, "Usage: %s <hex value>\n");
+    ensure_argc(2, "hex to base64 -- Usage: %s <hex value>\n");
 
     int nbytes = hex_decode(argv[1], MAXBYTE, bytes); /* hex to bytes */
     b64_encode(bytes, nbytes, b64_buf);               /* bytes to b64 */

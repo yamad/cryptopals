@@ -11,7 +11,7 @@
 
 /* repeating-key XOR */
 int main(int argc, char *argv[]) {
-	ensure_argc(2, "Usage: %s <key>\n");
+	ensure_argc(2, "repeating-key XOR encrypt -- Usage: %s <key>\n");
 
 	char ibuf[MAXLEN] = {0};    /* input buffer */
 	char obuf[MAXLEN] = {0};    /* output buffer */
