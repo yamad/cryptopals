@@ -145,3 +145,14 @@ int pad_pkcs7(uint8_t *in, int inlen, uint8_t *out, int outlen)
 	memset(out+inlen, npad, npad);
 	return npad;
 }
+
+int randto(int max)
+{
+	return rand() / (RAND_MAX / (max+1));
+}
+
+void fill_random_bytes(uint8_t *buf, size_t len)
+{
+	for (int i = 0; i < len; i++)
+		*buf++ = randto(255);
+}

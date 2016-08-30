@@ -1,0 +1,2 @@
+cat data/cc-06-output.txt | build/bin/cc-11
+Successfully detected 10 random encryption modes

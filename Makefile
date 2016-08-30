@@ -1,5 +1,5 @@
 TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06 cc-07 cc-08 \
-				cc-09 cc-10
+				cc-09 cc-10 cc-11
 
 SRC_DIR     := src
 INC_DIR     := include

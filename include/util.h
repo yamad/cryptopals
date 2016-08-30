@@ -68,6 +68,10 @@ int transpose_blocks(uint8_t *b, size_t blen, size_t blocklen, uint8_t ***t);
 
 int fill_block(uint8_t *buf, size_t len, size_t stride, size_t offset, uint8_t *dst);
 
+void fill_random_bytes(uint8_t *buf, size_t len);
+
+int randto(int max);
+
 /**
  * Pad block using PKCS#7 (pad with # of pad bytes). Return # of pad bytes
  *
