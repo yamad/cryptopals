@@ -29,7 +29,11 @@ void test_aes128_ecb_encrypt_decrypt(void)
 	TEST_ASSERT_EQUAL_INT(inlen, dlen);
 
 	TEST_ASSERT_EQUAL_STRING(input, plaintext);
+
+    free(plaintext);
+    free(cipher);
 }
+
 
 void test_aes128_cbc_encrypt_decrypt(void)
 {

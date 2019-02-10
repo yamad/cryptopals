@@ -107,35 +107,47 @@ int aes128_cbc_decrypt(uint8_t *cipher, size_t len,
 	return len - *(out+ip-1);
 }
 
-int aes128_random_encrypt(uint8_t *plaintext, size_t len, uint8_t *out, enum encryption_mode *mode)
+int aes128_random_key(uint8_t *out)
+{
+    fill_random_bytes(out, AES_BLOCK_BYTES);
+    return AES_BLOCK_BYTES;
+}
+
+int aes128_random_encrypt(uint8_t *plaintext, size_t len,
+                          uint8_t *out, enum encryption_mode *mode)
 {
 	/* append 5-10 random bytes each to front and back of plaintext */
 	int nlead = randto(5) + 5;
 	int ntail = randto(5) + 5;
 
-	uint8_t *input = (uint8_t*)malloc(sizeof(uint8_t) * (len+nlead+ntail));
+    int inlen = len + nlead + ntail;
+    uint8_t *input = malloc(inlen * sizeof(uint8_t));
 	if (input == NULL) return -1;
 
 	fill_random_bytes(input, nlead);
 	memcpy(input+nlead, plaintext, len);
-	fill_random_bytes(input+nlead+len, ntail);
-	len += nlead + ntail;
+	fill_random_bytes(input+len+nlead, ntail);
 
+    int outlen;
 	uint8_t key[AES_BLOCK_BYTES];
 	uint8_t iv[AES_BLOCK_BYTES];
-	fill_random_bytes(key, AES_BLOCK_BYTES);
+    aes128_random_key(key);
 
-	*mode = randto(1);       /* randomly choose encrpytion mode */
+	*mode = randto(1);          /* randomly choose encryption mode */
 	switch (*mode) {
-	case 0:                     /* ECB */
-		return aes128_ecb_encrypt(plaintext, len, key, AES_BLOCK_BYTES, out);
+	case ECB_MODE:              /* ECB */
+		outlen = aes128_ecb_encrypt(input, inlen, key, AES_BLOCK_BYTES, out);
+        break;
 	default:                    /* CBC */
 		fill_random_bytes(iv, AES_BLOCK_BYTES);
-		return aes128_cbc_encrypt(plaintext, len, key, AES_BLOCK_BYTES, iv, out);
+		outlen = aes128_cbc_encrypt(input, inlen, key, AES_BLOCK_BYTES, iv, out);
 	}
+
+    free(input);
+    return outlen;
 }
 
-int aes128_encryption_oracle(uint8_t *cipher, size_t len)
+int detect_aes128_encryption_mode(uint8_t *cipher, size_t len)
 {
 	for (int off=0; off < AES_BLOCK_BYTES; off++)
 		if (detect_ecb(cipher+off, len-off))
@@ -151,10 +163,14 @@ int aes128_encryption_oracle(uint8_t *cipher, size_t len)
 int	detect_ecb(uint8_t *cipher, size_t len)
 {
 	int nblks = len / AES_BLOCK_BYTES;
-	for (int ib = 0; ib < nblks; ib++)
-		for (int jb = ib+1; jb < nblks; jb++)
-			if (hamming_distance(cipher+(AES_BLOCK_BYTES*ib),
-			                     cipher+(AES_BLOCK_BYTES*jb), AES_BLOCK_BYTES) == 0)
-				return 1;
+	for (int ib = 0; ib < nblks-1; ib++) {
+        uint8_t *blk1 = cipher+(AES_BLOCK_BYTES*ib);
+
+        for (int jb = ib+1; jb < nblks; jb++) {
+            uint8_t *blk2 = cipher+(AES_BLOCK_BYTES*jb);
+            if (hamming_distance(blk1, blk2, AES_BLOCK_BYTES) == 0)
+                return 1;
+        }
+    }
 	return 0;
 }

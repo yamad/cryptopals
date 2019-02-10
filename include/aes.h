@@ -26,7 +26,9 @@ int aes128_cbc_decrypt(uint8_t *cipher, size_t len,
 /** returns 1 if ECB mode is detected in given cipher text. Otherwise, returns 0 */
 int detect_ecb(uint8_t *cipher, size_t len);
 
-int aes128_random_encrypt(uint8_t *plaintext, size_t len, uint8_t *out, enum encryption_mode *mode);
-int aes128_encryption_oracle(uint8_t *cipher, size_t len);
+int aes128_random_key(uint8_t *out);
+int aes128_random_encrypt(uint8_t *plaintext, size_t len,
+                          uint8_t *out, enum encryption_mode *mode);
+int detect_aes128_encryption_mode(uint8_t *cipher, size_t len);
 
 #endif /* CRYPTOPALS_AES_H */
