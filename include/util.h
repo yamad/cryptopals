@@ -84,4 +84,6 @@ int randto(int max);
  */
 int pad_pkcs7(uint8_t *in, int inlen, uint8_t *out, int outlen);
 
+void print_buffer(uint8_t *buf, size_t len);
+
 #endif /* CRYPTOPALS_UTIL_H */

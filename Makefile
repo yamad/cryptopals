@@ -1,5 +1,5 @@
 TARGET_NAMES := cc-01 cc-02 cc-03 cc-04 cc-05 cc-06 cc-07 cc-08 \
-				cc-09 cc-10 cc-11
+				cc-09 cc-10 cc-11 cc-12
 
 SRC_DIR     := src
 INC_DIR     := include
@@ -39,12 +39,12 @@ test:
 clean:
 	$(RM) -r $(BUILD_DIR)
 
-debug: CFLAGS += -DDEBUG -g
+debug: CFLAGS += -DDEBUG -g -Wall
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 
 # static library to use in all binaries
-LIBCP_FILES = util.o hex.o xor.o b64.o aes.o
+LIBCP_FILES = util.o hex.o xor.o b64.o aes.o buffer.o
 LIBCP_PATHS = $(foreach f,$(LIBCP_FILES),$(OBJ_DIR)/$(f))
 $(LIB_DIR)/libcryptopals.a : $(LIBCP_PATHS)
 	ar rcs $@ $^
@@ -90,8 +90,5 @@ clean_openssl :
 	cd lib/openssl && $(MAKE) clean
 
 .PHONY : clean_openssl
-
-#$(OBJ_DIR)/aes.o : $(LIB_DIR)/libcrypto.a
-
 
 -include $(DEPS)

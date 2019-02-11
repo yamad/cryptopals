@@ -156,3 +156,11 @@ void fill_random_bytes(uint8_t *buf, size_t len)
 	for (int i = 0; i < len; i++)
 		*buf++ = randto(255);
 }
+
+void print_buffer(uint8_t *buf, size_t len)
+{
+    uint8_t *p = buf;
+    for (int i = 0; i < len; i++)
+        printf("%c", *p++);
+    printf("\n");
+}
